@@ -9,11 +9,11 @@ import (
 func VerifySocket(addr string) (bool, error) {
 	ipAddr, err := net.ResolveIPAddr("ip4", addr)
 	if err != nil {
-		return false, fmt.Errorf("netscan: resolving IP Address %w", err)
+		return false, fmt.Errorf("shscan: resolving IP Address %w", err)
 	}
 	conn, err := net.ListenIP("ip4:tcp", ipAddr)
 	if err != nil {
-		return false, fmt.Errorf("netscan: creating connection %w", err)
+		return false, fmt.Errorf("shscan: creating connection %w", err)
 	}
 	conn.Close()
 	return true, nil
@@ -22,7 +22,7 @@ func VerifySocket(addr string) (bool, error) {
 func GenerateHostRange(network string) ([]string, error) {
 	_, ipNet, err := net.ParseCIDR(network)
 	if err != nil {
-		return nil, fmt.Errorf("netscan: generating host range %w", err)
+		return nil, fmt.Errorf("shscan: generating host range %w", err)
 	}
 	mask := binary.BigEndian.Uint32(ipNet.Mask)
 	start := binary.BigEndian.Uint32(ipNet.IP)
