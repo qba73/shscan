@@ -17,7 +17,6 @@ func TestGenerateHostsFromNetAddress(t *testing.T) {
 
 	want := 254
 	got := len(ipaddresses)
-
 	if !cmp.Equal(want, got) {
 		t.Error(cmp.Diff(want, got))
 	}

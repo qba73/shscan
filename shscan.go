@@ -20,17 +20,16 @@ func VerifySocket(addr string) (bool, error) {
 }
 
 func GenerateHostRange(network string) ([]string, error) {
-	_, ipv4Net, err := net.ParseCIDR(network)
+	_, ipNet, err := net.ParseCIDR(network)
 	if err != nil {
 		return nil, fmt.Errorf("netscan: generating host range %w", err)
 	}
-
-	mask := binary.BigEndian.Uint32(ipv4Net.Mask)
-	start := binary.BigEndian.Uint32(ipv4Net.IP)
-	finish := (start & mask) | (mask ^ 0xffffffff)
+	mask := binary.BigEndian.Uint32(ipNet.Mask)
+	start := binary.BigEndian.Uint32(ipNet.IP)
+	end := (start & mask) | (mask ^ 0xffffffff)
 
 	var hosts []string
-	for i := start + 1; i <= finish-1; i++ {
+	for i := start + 1; i <= end-1; i++ {
 		ip := make(net.IP, 4)
 		binary.BigEndian.PutUint32(ip, i)
 		hosts = append(hosts, ip.String())
